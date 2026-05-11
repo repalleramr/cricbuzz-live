@@ -8,9 +8,15 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/v1/(.*)",
       "dest": "src/index.js",
-      "methods": ["GET", "POST", "OPTIONS"]
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "src/index.js"
     }
   ]
 }
