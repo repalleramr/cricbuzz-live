@@ -1,23 +1,16 @@
-const http = require('http');
 const { App } = require('./config/app');
 const { env } = require('./config/env');
-const { httpHandle } = require('./core/modules/httpHandle');
 
-function bootstrap() {
-    const port = env.APP_PORT;
+// 1. Create the express app instance
+const app = new App().create();
 
-    // create express app
-    const app = new App().create();
+// 2. CRITICAL: Export the app for Vercel's engine
+module.exports = app;
 
-    const server = http.createServer(app);
-
-    // http handle
-    const { onError, onListening } = httpHandle(server, port);
-
-    // run server listen
-    server.listen(port);
-    server.on('error', onError);
-    server.on('listening', onListening);
+// 3. Local compatibility (Only runs on your PC, not Vercel)
+if (require.main === module) {
+    const port = env.APP_PORT || 3000;
+    app.listen(port, () => {
+        console.log(`Server active locally on port ${port}`);
+    });
 }
-
-bootstrap();
